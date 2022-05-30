@@ -13,31 +13,28 @@ function imageMode(color) {
     image3.src = `./img/undraw_conceptual_idea_${color}.svg`;
 }
 
-function darkMode() {
-    nav.style.backgroundColor = 'rgb(0 0 0 / 50%)';
-    textBox.style.backgroundColor = 'rgb(255 255 255 / 50%';
-    toggleIcon.children[0].textContent = 'Dark Mode';
-    toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon');
-    imageMode('dark');
-}
-
-function lightMode() {
-    nav.style.backgroundColor = 'rgb(255 255 255 / 50%)';
-    textBox.style.backgroundColor = 'rgb(0 0 0 / 50%';
-    toggleIcon.children[0].textContent = 'Light Mode';
-    toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun');
-    imageMode('light');
+function toggleThemeMode(isLightMode) {
+    nav.style.backgroundColor = isLightMode === 'light' ? 'rgb(255 255 255 / 50%)' : 'rgb(0 0 0 / 50%)';
+    textBox.style.backgroundColor = isLightMode === 'light' ? 'rgb(0 0 0 / 50%' : 'rgb(255 255 255 / 50%';
+    toggleIcon.children[0].textContent = isLightMode === 'light' ? 'Light Mode' : 'Dark Mode';
+    if(isLightMode === 'light') {
+        toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun');
+        imageMode('light');
+    } else if(isLightMode === 'dark') {
+        toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon');
+        imageMode('dark');
+    }
 }
 
 function switchTheme(event) {
     if(event.target.checked) {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
-        darkMode();
+        toggleThemeMode('dark');
     } else {
         document.documentElement.setAttribute('data-theme', 'light');
         localStorage.setItem('theme', 'light');
-        lightMode();
+        toggleThemeMode('light');
     }
 }
 
@@ -48,6 +45,6 @@ if(currentTheme) {
     document.documentElement.setAttribute('data-theme', currentTheme);
     if(currentTheme === 'dark') {
         toggleSwitch.checked = true;
-        darkMode();
+        toggleThemeMode('dark');
     }
 }
